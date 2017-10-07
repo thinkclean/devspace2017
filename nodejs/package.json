@@ -6,14 +6,16 @@
   "scripts": {
     "lint": "eslint \"src/**\"",
     "pretest": "npm run lint",
-    "test": "mocha \"src/**.spec.js\"",
+    "test": "mocha \"src/**/*.spec.js\"",
     "start": "node src/"
   },
   "author": "Florian Schinagl <fs@think-clean.de>",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.2",
+    "config": "^1.26.2",
     "express": "^4.16.1",
+    "express-graceful-exit": "^0.4.0",
     "mongoose": "^4.12.0"
   },
   "devDependencies": {
@@ -22,6 +24,7 @@
     "eslint-config-airbnb-base": "^12.0.2",
     "eslint-plugin-import": "^2.7.0",
     "mocha": "^4.0.1",
+    "sinon": "^4.0.1",
     "supertest": "^3.0.0"
   }
 }

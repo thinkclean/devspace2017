@@ -1,12 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 
-const users = require('./users');
+const todo = require('./api/todo');
 
 const app = express();
 
 app.use(bodyParser.json());
 
-app.use('/users', users(new express.Router()));
+app.use('/api', todo(new express.Router()));
 
 module.exports = app;
