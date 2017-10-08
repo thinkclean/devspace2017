@@ -11,4 +11,8 @@ app.use(bodyParser.json());
 app.use('/_health', health(new express.Router()));
 app.use('/api', todo(new express.Router()));
 
+app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
+  res.status(500).send(err.toString());
+});
+
 module.exports = app;
