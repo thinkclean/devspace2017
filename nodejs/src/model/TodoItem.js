@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
 const schema = new mongoose.Schema({
-  name: String,
-  done: Boolean,
+  name: { type: String, required: true },
+  done: { type: Boolean, required: true, default: false },
 });
 
 module.exports = mongoose.model('TodoItem', schema);
