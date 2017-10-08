@@ -1,11 +1,11 @@
-const TodoItem = require('../model/TodoItem');
+const { TodoItem } = require('../services/dbService');
 
 module.exports = (app) => {
   app.get('/todo', (req, res) => {
     TodoItem
       .find()
       .then(items => res.json(items))
-      .catch(err => res.status(400).send(err.toString()));
+      .catch(err => res.status(400).json(err.toString()));
   });
 
   app.get('/todo/:id', (req, res) => {
@@ -13,36 +13,36 @@ module.exports = (app) => {
       .findById(req.params.id)
       .then((item) => {
         if (item) res.json(item);
-        else res.status(404).send('not found');
+        else res.status(404).json('not found');
       })
-      .catch(err => res.status(400).send(err.toString()));
+      .catch(err => res.status(400).json(err.toString()));
   });
 
   app.post('/todo', (req, res) => {
-    new TodoItem(req.body)
-      .save()
-      .then(item => res.json({ id: item._id }))
-      .catch(err => res.status(400).send(err.toString()));
+    TodoItem
+      .save(req.body)
+      .then(item => res.json(item))
+      .catch(err => res.status(400).json(err.toString()));
   });
 
   app.put('/todo/:id', (req, res) => {
     TodoItem
-      .findByIdAndUpdate(req.params.id, req.body, { runValidators: true })
+      .findByIdAndUpdate(req.params.id, req.body)
       .then((item) => {
-        if (item) res.json();
-        else res.status(404).send('not found');
+        if (item) res.json(item);
+        else res.status(404).json('not found');
       })
-      .catch(err => res.status(400).send(err.toString()));
+      .catch(err => res.status(400).json(err.toString()));
   });
 
   app.delete('/todo/:id', (req, res) => {
     TodoItem
       .findByIdAndRemove(req.params.id)
       .then((item) => {
-        if (item) res.json();
-        else res.status(404).send('not found');
+        if (item) res.json(item);
+        else res.status(404).json('not found');
       })
-      .catch(err => res.status(400).send(err.toString()));
+      .catch(err => res.status(400).json(err.toString()));
   });
 
   return app;

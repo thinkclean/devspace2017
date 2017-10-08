@@ -1,4 +1,5 @@
 {
+  "useDatabase": false,
   "db": {
     "uri": "mongodb://localhost/devspace2017",
     "options": {

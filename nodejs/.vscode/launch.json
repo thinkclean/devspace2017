@@ -5,7 +5,7 @@
           "type": "node",
           "request": "launch",
           "name": "Launch Program",
-          "program": "${workspaceFolder}/bin/www",
+          "program": "${workspaceFolder}/src/",
           "cwd": "${workspaceFolder}"
       },
       {
@@ -13,6 +13,14 @@
           "request": "attach",
           "name": "Attach to Process",
           "port": 5858
+      },
+      {
+        "type": "node",
+        "request": "launch",
+        "name": "Run mocha",
+        "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
+        "args": ["src/**/*.spec.js"],
+        "cwd": "${workspaceFolder}"
       }
   ]
 }
