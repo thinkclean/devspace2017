@@ -8,7 +8,7 @@ const app = express();
 
 app.use(bodyParser.json());
 
-app.use('/health', health(new express.Router()));
+app.use('/_health', health(new express.Router()));
 app.use('/api', todo(new express.Router()));
 
 module.exports = app;

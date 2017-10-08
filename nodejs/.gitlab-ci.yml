@@ -1,0 +1,13 @@
+stages:
+  - build
+
+build_job:
+  image: node:8.6.0
+  stage: build
+  tags:
+    - docker
+  before_script:
+    - docker version
+  script:
+    - chmod +x build.sh
+    - ./build.sh
