@@ -38,6 +38,11 @@ const findByIdAndRemove = (id) => {
   return Promise.resolve(todoItem);
 };
 
+const remove = () => {
+  todoItems = [];
+  return Promise.resolve();
+};
+
 module.exports = {
   connect: () => Promise.resolve(),
   disconnect: () => Promise.resolve(),
@@ -47,5 +52,6 @@ module.exports = {
     save,
     findByIdAndUpdate,
     findByIdAndRemove,
+    remove,
   },
 };

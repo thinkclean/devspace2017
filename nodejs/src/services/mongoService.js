@@ -15,10 +15,13 @@ const save = data =>
   new TodoItem(data).save();
 
 const findByIdAndUpdate = (id, data) =>
-  TodoItem.findByIdAndUpdate(id, data, { runValidators: true });
+  TodoItem.findByIdAndUpdate(id, data, { runValidators: true, new: true });
 
 const findByIdAndRemove = id =>
   TodoItem.findByIdAndRemove(id);
+
+const remove = () =>
+  TodoItem.remove();
 
 module.exports = {
   connect: () => mongoose.connect(config.db.uri, config.db.options)
@@ -30,5 +33,6 @@ module.exports = {
     save,
     findByIdAndUpdate,
     findByIdAndRemove,
+    remove,
   },
 };

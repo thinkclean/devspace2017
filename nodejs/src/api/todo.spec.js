@@ -8,6 +8,8 @@ describe('/api/todo', () => {
   before(() => db.connect());
   after(() => db.disconnect());
 
+  // before(() => db.TodoItem.remove());
+
   describe('when having no todo items', () => {
     it('GET /api/todo should return empty array', () =>
       request(app)
@@ -56,7 +58,7 @@ describe('/api/todo', () => {
     describe('and requesting todo item by unknown id', () => {
       it('GET /api/todo/:id should return code 404', () =>
         request(app)
-          .get('/api/todo/1')
+          .get('/api/todo/59da7acf579f301db01174c0')
           .expect(404));
     });
 
