@@ -1,0 +1,8 @@
+Vagrant.configure("2") do |config|
+  config.vm.box = "bento/ubuntu-16.04"
+
+  config.vm.provision "docker" do |d|
+    d.build_image "/vagrant", args: "-t devspace2017-nodejs"
+    d.run "devspace2017-nodejs", args: "--name devspace2017"
+  end
+end
