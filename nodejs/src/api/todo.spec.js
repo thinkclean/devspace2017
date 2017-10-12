@@ -1,15 +1,9 @@
 const { expect } = require('chai');
 const request = require('supertest');
 
-const db = require('../services/dbService');
 const app = require('../server');
 
 describe('/api/todo', () => {
-  before(() => db.connect());
-  after(() => db.disconnect());
-
-  // before(() => db.TodoItem.remove());
-
   describe('when having no todo items', () => {
     it('GET /api/todo should return empty array', () =>
       request(app)
@@ -21,7 +15,7 @@ describe('/api/todo', () => {
         }));
   });
 
-  describe('when having a todo item', () => {
+  describe('when creating a todo item', () => {
     let todoItem;
     before(() =>
       request(app)
@@ -30,7 +24,7 @@ describe('/api/todo', () => {
         .expect(200)
         .expect(({ body }) => {
           expect(body).to.be.an('object');
-          expect(body._id).to.be.a('string');
+          expect(body.id).to.be.equal(1);
           expect(body.name).to.be.equal('hello');
           todoItem = body;
         }));
@@ -48,7 +42,7 @@ describe('/api/todo', () => {
 
       it('GET /api/todo/:id should return expected item', () =>
         request(app)
-          .get(`/api/todo/${todoItem._id}`)
+          .get(`/api/todo/${todoItem.id}`)
           .expect(200)
           .expect(({ body }) => {
             expect(body).to.be.deep.equal(todoItem);
@@ -65,12 +59,12 @@ describe('/api/todo', () => {
     describe('and updating todo item by known id', () => {
       it('PUT /api/todo/:id should return code 404', () =>
         request(app)
-          .put(`/api/todo/${todoItem._id}`)
+          .put(`/api/todo/${todoItem.id}`)
           .send({ done: true })
           .expect(200)
           .expect(({ body }) => {
             expect(body).to.be.deep.equal({
-              _id: todoItem._id,
+              id: todoItem.id,
               name: todoItem.name,
               done: true,
             });
@@ -80,10 +74,10 @@ describe('/api/todo', () => {
     describe('and deleting todo item by known id', () => {
       before(() =>
         request(app)
-          .delete(`/api/todo/${todoItem._id}`)
+          .delete(`/api/todo/${todoItem.id}`)
           .expect(200)
           .expect(({ body }) => {
-            expect(body._id).to.be.deep.equal(todoItem._id);
+            expect(body.id).to.be.deep.equal(todoItem.id);
           }));
 
       describe('and requesting todo item by known id', () => {
@@ -98,9 +92,32 @@ describe('/api/todo', () => {
 
         it('GET /api/todo/:id should return code 404', () =>
           request(app)
-            .get(`/api/todo/${todoItem._id}`)
+            .get(`/api/todo/${todoItem.id}`)
             .expect(404));
       });
     });
+  });
+
+  describe('when creating two todo items', () => {
+    before(() =>
+      request(app)
+        .post('/api/todo')
+        .send({ name: 'hello' })
+        .expect(200));
+
+    before(() =>
+      request(app)
+        .post('/api/todo')
+        .send({ name: 'hello' })
+        .expect(200));
+
+    it('GET /api/todo should return two items', () =>
+      request(app)
+        .get('/api/todo')
+        .expect(200)
+        .expect(({ body }) => {
+          expect(body).to.be.an('array');
+          expect(body).to.have.length(2);
+        }));
   });
 });

@@ -1,48 +1,44 @@
-const { TodoItem } = require('../services/dbService');
+/* eslint-disable eqeqeq, no-plusplus */
+let nextId = 1;
+let items = [];
+
+const getNextId = () => nextId++;
 
 module.exports = (app) => {
   app.get('/todo', (req, res) => {
-    TodoItem
-      .find()
-      .then(items => res.json(items))
-      .catch(err => res.status(400).json(err.toString()));
+    res.json(items);
   });
 
   app.get('/todo/:id', (req, res) => {
-    TodoItem
-      .findById(req.params.id)
-      .then((item) => {
-        if (item) res.json(item);
-        else res.status(404).json('not found');
-      })
-      .catch(err => res.status(400).json(err.toString()));
+    const item = items.find(i => i.id == req.params.id);
+    if (item) res.json(item);
+    else res.status(404).json('item not found');
   });
 
   app.post('/todo', (req, res) => {
-    TodoItem
-      .save(req.body)
-      .then(item => res.json(item))
-      .catch(err => res.status(400).json(err.toString()));
+    const item = Object.assign({}, req.body, { id: getNextId() });
+    items.push(item);
+    res.json(item);
   });
 
   app.put('/todo/:id', (req, res) => {
-    TodoItem
-      .findByIdAndUpdate(req.params.id, req.body)
-      .then((item) => {
-        if (item) res.json(item);
-        else res.status(404).json('not found');
-      })
-      .catch(err => res.status(400).json(err.toString()));
+    const item = items.find(i => i.id == req.params.id);
+    if (item) {
+      Object.assign(item, req.body);
+      res.json(item);
+    } else {
+      res.status(404).json('item not found');
+    }
   });
 
   app.delete('/todo/:id', (req, res) => {
-    TodoItem
-      .findByIdAndRemove(req.params.id)
-      .then((item) => {
-        if (item) res.json(item);
-        else res.status(404).json('not found');
-      })
-      .catch(err => res.status(400).json(err.toString()));
+    const item = items.find(i => i.id == req.params.id);
+    if (item) {
+      items = items.filter(i => i.id != req.params.id);
+      res.json(item);
+    } else {
+      res.status(404).json('item not found');
+    }
   });
 
   return app;

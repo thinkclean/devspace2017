@@ -1,6 +1,0 @@
-{
-  "useDatabase": true,
-  "db": {
-    "uri": "mongodb://mongo/devspace2017"
-  }
-}
